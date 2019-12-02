@@ -77,7 +77,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = postFile("build.zip", "http://localhost:8080/deploy")
+	err = postFile("deploy.zip", "http://localhost:8080/deploy")
 }
 
 func postFile(filename string, targetUrl string) error {
