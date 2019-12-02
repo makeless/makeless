@@ -71,16 +71,16 @@ func main() {
 	config.Files = append(config.Files, "docker-compose.yml")
 
 	// zip
-	err = zip.Archive(config.Files, "build.zip")
+	err = zip.Archive(config.Files, "deploy.zip")
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = postFile("deploy.zip", "http://localhost:8080/deploy")
+	err = post(config, "deploy.zip", "http://localhost:8080/deploy")
 }
 
-func postFile(filename string, targetUrl string) error {
+func post(config *config, filename string, targetUrl string) error {
 	bodyBuffer := new(bytes.Buffer)
 	bodyWriter := multipart.NewWriter(bodyBuffer)
 
@@ -109,6 +109,19 @@ func postFile(filename string, targetUrl string) error {
 
 	if err != nil {
 		return err
+	}
+
+	// service field
+	fieldWriter, err := bodyWriter.CreateFormField("service")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = fieldWriter.Write([]byte(config.Service))
+
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	contentType := bodyWriter.FormDataContentType()
@@ -143,6 +156,6 @@ func postFile(filename string, targetUrl string) error {
 		return err
 	}
 
-	log.Println(string(body))
+	log.Println("asdfasdf", string(body))
 	return nil
 }
