@@ -156,6 +156,6 @@ func post(config *config, filename string, targetUrl string) error {
 		return err
 	}
 
-	log.Println("asdfasdf", string(body))
+	log.Println(string(body))
 	return nil
 }
