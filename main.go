@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/mholt/archiver/v3"
 	"gopkg.in/yaml.v2"
 	"io"
@@ -78,6 +80,16 @@ func main() {
 	}
 
 	err = post(config, "deploy.zip", "http://localhost:8080/deploy")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func getSignedToken() (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{})
+
+	return token.SignedString([]byte("RANDOM-TOKEN-HERE"))
 }
 
 func post(config *config, filename string, targetUrl string) error {
@@ -133,8 +145,29 @@ func post(config *config, filename string, targetUrl string) error {
 		return err
 	}
 
-	// post file
-	resp, err := http.Post(targetUrl, contentType, bodyBuffer)
+	// get signed token
+	signedToken, err := getSignedToken()
+
+	if err != nil {
+		return err
+	}
+
+	// request
+	req, err := http.NewRequest("POST", targetUrl, bodyBuffer)
+
+	if err != nil {
+		return err
+	}
+
+	// add headers
+	req.Header.Add("Content-Type", contentType)
+	req.Header.Add("authorization", fmt.Sprintf("Bearer %s", signedToken))
+
+	// client
+	client := new(http.Client)
+
+	// post
+	resp, err := client.Do(req)
 
 	if err != nil {
 		return err
