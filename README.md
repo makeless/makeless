@@ -8,7 +8,7 @@
 curl ..
 ```
 
-## Example
+## Examples
 
 ### .serve.yml - Basic Apache httpd service
 
