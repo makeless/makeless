@@ -14,3 +14,5 @@
 # custom
 /.idea
 serve
+serve-darwin
+serve-linux
