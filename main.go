@@ -12,6 +12,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -70,8 +71,18 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// replace placeholders
+	yStr := string(y)
+
+	// --> %build_dir%
+	yStr = strings.ReplaceAll(
+		yStr,
+		"%build_dir%",
+		fmt.Sprintf("/home/serve/containers/%s/latest", config.Name),
+	)
+
 	// write docker-compose.yml file
-	err = ioutil.WriteFile("docker-compose.yml", y, 0644)
+	err = ioutil.WriteFile("docker-compose.yml", []byte(yStr), 0644)
 
 	if err != nil {
 		log.Fatal(err)
