@@ -2,12 +2,6 @@
 
 [![Build Status](https://travis-ci.com/loeffel-io/serve.svg?token=diwUYjrdo8kHiwiMCFuq&branch=master)](https://travis-ci.com/loeffel-io/serve)
 
-## Run
-
-```bash
-curl ..
-```
-
 ## Examples
 
 ### .serve.yml - Basic Apache httpd service
@@ -42,4 +36,21 @@ service:
   environment:
     - MYSQL_ROOT_PASSWORD=example
 ```
-  
+
+## Run
+
+### MacOS
+
+```bash
+curl -sL -o serve https://github.com/loeffel-io/serve/releases/download/v0.1.0/serve-darwin && \
+    chmod +x serve && \
+    TOKEN="RANDOM-TOKEN-HERE" ./serve
+```
+
+### Linux
+
+```bash
+curl -sL -o serve https://github.com/loeffel-io/serve/releases/download/v0.1.0/serve-linux && \
+    chmod +x serve && \
+    TOKEN="RANDOM-TOKEN-HERE" ./serve
+```
