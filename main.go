@@ -79,17 +79,19 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = post(config, "deploy.zip", "http://localhost:8080/deploy")
+	err = post(config, "deploy.zip", fmt.Sprintf("http://%s/deploy", config.Host))
 
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func getSignedToken() (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{})
+func getSignedToken(service string) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"service": service,
+	})
 
-	return token.SignedString([]byte("RANDOM-TOKEN-HERE"))
+	return token.SignedString([]byte(os.Getenv("TOKEN")))
 }
 
 func post(config *config, filename string, targetUrl string) error {
@@ -146,7 +148,7 @@ func post(config *config, filename string, targetUrl string) error {
 	}
 
 	// get signed token
-	signedToken, err := getSignedToken()
+	signedToken, err := getSignedToken(config.Service)
 
 	if err != nil {
 		return err
