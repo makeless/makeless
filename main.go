@@ -50,13 +50,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// to docker-compose.yml
-	y, err := yaml.Marshal(map[string]interface{}{
+	// build compose
+	compose := map[string]interface{}{
 		"version": "3",
 		"services": map[string]interface{}{
-			config.Service: config.Compose,
+			config.Name: config.Service,
 		},
-	})
+	}
+
+	// assign shared values
+	for key, value := range config.Shared {
+		compose[key] = value
+	}
+
+	// to docker-compose.yml
+	y, err := yaml.Marshal(compose)
 
 	if err != nil {
 		log.Fatal(err)
@@ -86,9 +94,9 @@ func main() {
 	}
 }
 
-func getSignedToken(service string) (string, error) {
+func getSignedToken(name string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"service": service,
+		"name": name,
 	})
 
 	return token.SignedString([]byte(os.Getenv("TOKEN")))
@@ -125,14 +133,14 @@ func post(config *config, filename string, targetUrl string) error {
 		return err
 	}
 
-	// service field
-	fieldWriter, err := bodyWriter.CreateFormField("service")
+	// name field
+	fieldWriter, err := bodyWriter.CreateFormField("name")
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = fieldWriter.Write([]byte(config.Service))
+	_, err = fieldWriter.Write([]byte(config.Name))
 
 	if err != nil {
 		log.Fatal(err)
@@ -148,7 +156,7 @@ func post(config *config, filename string, targetUrl string) error {
 	}
 
 	// get signed token
-	signedToken, err := getSignedToken(config.Service)
+	signedToken, err := getSignedToken(config.Name)
 
 	if err != nil {
 		return err
