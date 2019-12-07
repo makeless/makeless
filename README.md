@@ -10,14 +10,15 @@ curl ..
 
 ## Example
 
-### .serve.yml
+### .serve.yml - Basic Apache httpd service
 
 ```yaml
 host: 'localhost:8080'
-name: 'serve-project'
+name: 'test-project'
 
 files:
   - index.html
+  - images
   - Dockerfile
 
 service:
@@ -28,3 +29,17 @@ service:
     - 3000:80
 ```
 
+### .serve.yml - Basic MySQL Service
+
+```yaml
+host: 'localhost:8080'
+name: 'test-mysql'
+
+service:
+  image: 'mysql'
+  command: --default-authentication-plugin=mysql_native_password
+  restart: always
+  environment:
+    - MYSQL_ROOT_PASSWORD=example
+```
+  
