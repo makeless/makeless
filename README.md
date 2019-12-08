@@ -1,6 +1,9 @@
-# WIP: Serve Client - Painless Docker Deployments
+<img width="180" src="https://raw.githubusercontent.com/loeffel-io/serve-server/master/serve-logo.png" alt="logo">
 
-[![Build Status](https://travis-ci.com/loeffel-io/serve.svg?token=diwUYjrdo8kHiwiMCFuq&branch=master)](https://travis-ci.com/loeffel-io/serve)
+# Serve Client - Painless Docker Deployments
+
+[![Build Status](https://travis-ci.com/loeffel-io/serve-server.svg?token=diwUYjrdo8kHiwiMCFuq&branch=master)](https://travis-ci.com/loeffel-io/serve-server)
+![Project Status](https://www.repostatus.org/badges/latest/wip.svg)
 
 ## Examples
 
