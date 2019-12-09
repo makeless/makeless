@@ -3,7 +3,6 @@
 # Serve Client - Painless Docker Deployments
 
 [![Build Status](https://travis-ci.com/loeffel-io/serve-server.svg?token=diwUYjrdo8kHiwiMCFuq&branch=master)](https://travis-ci.com/loeffel-io/serve-server)
-![Project Status](https://www.repostatus.org/badges/latest/wip.svg)
 
 ## Examples
 
