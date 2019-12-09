@@ -158,26 +158,26 @@ func post(config *config, filename string, targetUrl string) error {
 	nameFieldWriter, err := bodyWriter.CreateFormField("name")
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	_, err = nameFieldWriter.Write([]byte(config.Name))
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	// shared field
 	sharedFieldWriter, err := bodyWriter.CreateFormField("shared")
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	_, err = sharedFieldWriter.Write([]byte(strconv.FormatBool(len(config.Service) == 0)))
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	// content type
@@ -234,6 +234,6 @@ func post(config *config, filename string, targetUrl string) error {
 		return err
 	}
 
-	log.Println(string(body))
+	log.Printf("%s", string(body))
 	return nil
 }
