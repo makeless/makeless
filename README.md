@@ -7,6 +7,20 @@
 
 ## Examples
 
+### .serve.yml - Shared
+
+```yaml
+host: 'localhost:8080'
+name: 'test-shared'
+
+files:
+  - ssl
+
+shared:
+  networks:
+    backend:
+```
+
 ### .serve.yml - Basic Apache httpd service
 
 ```yaml
