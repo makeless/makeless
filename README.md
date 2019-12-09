@@ -63,11 +63,15 @@ service:
 ### MacOS
 
 ```bash
-curl -sL -o serve https://github.com/loeffel-io/serve/releases/download/v0.2.0/serve-darwin && TOKEN="RANDOM-TOKEN-HERE" ./serve
+curl -sL -o serve https://github.com/loeffel-io/serve/releases/download/v0.2.0/serve-darwin && \
+    chmod +x serve && \
+    TOKEN="RANDOM-TOKEN-HERE" ./serve
 ```
 
 ### Linux
 
 ```bash
-curl -sL -o serve https://github.com/loeffel-io/serve/releases/download/v0.2.0/serve-linux && TOKEN="RANDOM-TOKEN-HERE" ./serve
+curl -sL -o serve https://github.com/loeffel-io/serve/releases/download/v0.2.0/serve-linux && \
+    chmod +x serve && \
+    TOKEN="RANDOM-TOKEN-HERE" ./serve
 ```
