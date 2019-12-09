@@ -12,6 +12,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -52,15 +53,24 @@ func main() {
 	}
 
 	// build compose
-	compose := map[string]interface{}{
-		"version": "3",
-		"services": map[string]interface{}{
+	var compose = make(map[string]interface{})
+
+	// compose -> version
+	compose["version"] = "3"
+
+	// compose -> services
+	if config.Service != nil {
+		compose["services"] = map[string]interface{}{
 			config.Name: config.Service,
-		},
+		}
 	}
 
-	// assign shared values
+	// compose -> shared
 	for key, value := range config.Shared {
+		if key == "services" {
+			continue
+		}
+
 		compose[key] = value
 	}
 
@@ -145,18 +155,32 @@ func post(config *config, filename string, targetUrl string) error {
 	}
 
 	// name field
-	fieldWriter, err := bodyWriter.CreateFormField("name")
+	nameFieldWriter, err := bodyWriter.CreateFormField("name")
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = fieldWriter.Write([]byte(config.Name))
+	_, err = nameFieldWriter.Write([]byte(config.Name))
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// shared field
+	sharedFieldWriter, err := bodyWriter.CreateFormField("shared")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_, err = sharedFieldWriter.Write([]byte(strconv.FormatBool(len(config.Service) == 0)))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// content type
 	contentType := bodyWriter.FormDataContentType()
 
 	// close bodyWriter
