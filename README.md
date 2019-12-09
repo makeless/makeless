@@ -13,9 +13,6 @@
 host: 'localhost:8080'
 name: 'test-shared'
 
-files:
-  - ssl
-
 shared:
   networks:
     backend:
