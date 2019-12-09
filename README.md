@@ -7,7 +7,8 @@
 
 ## Examples
 
-### .serve.yml - Shared
+### Shared Resources
+*.serve.yml*
 
 ```yaml
 host: 'localhost:8080'
@@ -15,14 +16,15 @@ name: 'test-shared'
 
 shared:
   networks:
-    backend:
+    test-network:
 ```
 
-### .serve.yml - Basic Apache httpd service
+### Apache httpd service
+*.serve.yml*
 
 ```yaml
 host: 'localhost:8080'
-name: 'test-project'
+name: 'test-apache'
 
 files:
   - index.html
@@ -31,13 +33,16 @@ files:
 
 service:
   build:
-    context: "%build_dir%"
+    context: '%build_dir%'
     dockerfile: Dockerfile
   ports:
-    - 3000:80
+    - 80:80
+  networks:
+    - test-network
 ```
 
-### .serve.yml - Basic MySQL Service
+### MySQL Service
+*.serve.yml*
 
 ```yaml
 host: 'localhost:8080'
@@ -49,6 +54,8 @@ service:
   restart: always
   environment:
     - MYSQL_ROOT_PASSWORD=example
+  networks:
+    - test-network
 ```
 
 ## Run
