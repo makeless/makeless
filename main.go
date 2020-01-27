@@ -23,7 +23,7 @@ func main() {
 	}
 
 	// open file
-	file, err := os.Open(".serve.yml")
+	file, err := os.Open(".makeless.yml")
 
 	if err != nil {
 		log.Fatal(err)
@@ -88,7 +88,7 @@ func main() {
 	yStr = strings.ReplaceAll(
 		yStr,
 		"%build_dir%",
-		fmt.Sprintf("/home/serve/containers/%s/latest", config.Name),
+		fmt.Sprintf("/home/makeless/containers/%s/latest", config.Name),
 	)
 
 	// write docker-compose.yml file

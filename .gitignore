@@ -13,6 +13,6 @@
 
 # custom
 /.idea
-serve
-serve-darwin
-serve-linux
+makeless
+makeless-darwin
+makeless-linux

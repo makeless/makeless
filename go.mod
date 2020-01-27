@@ -1,4 +1,4 @@
-module github.com/loeffel-io/serve
+module github.com/makeless/makeless
 
 go 1.12
 

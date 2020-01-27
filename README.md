@@ -1,76 +1,25 @@
-<img width="180" src="https://raw.githubusercontent.com/loeffel-io/serve-server/master/serve-logo.png" alt="logo">
+<img width="180" src="https://raw.githubusercontent.com/makeless/server/master/serve-logo.png" alt="logo">
 
-# Serve Client - Painless Docker Deployments
+# Makeless Client - Painless Docker Deployments
 
 [![Build Status](https://travis-ci.com/loeffel-io/serve-server.svg?token=diwUYjrdo8kHiwiMCFuq&branch=master)](https://travis-ci.com/loeffel-io/serve-server)
 
-## Examples
-
-### Shared Resources
-*.serve.yml*
-
-```yaml
-host: 'localhost:8080'
-name: 'test-shared'
-
-shared:
-  networks:
-    test-network:
-```
-
-### Apache httpd service
-*.serve.yml*
-
-```yaml
-host: 'localhost:8080'
-name: 'test-apache'
-
-files:
-  - index.html
-  - images
-  - Dockerfile
-
-service:
-  build:
-    context: '%build_dir%'
-    dockerfile: Dockerfile
-  ports:
-    - 80:80
-  networks:
-    - test-network
-```
-
-### MySQL Service
-*.serve.yml*
-
-```yaml
-host: 'localhost:8080'
-name: 'test-mysql'
-
-service:
-  image: 'mysql'
-  command: --default-authentication-plugin=mysql_native_password
-  restart: always
-  environment:
-    - MYSQL_ROOT_PASSWORD=example
-  networks:
-    - test-network
-```
+[Documentation](https://makeless.io)
 
 ## Run
 
 ### MacOS
 
 ```bash
-curl -sL -o serve https://github.com/loeffel-io/serve/releases/download/v0.3.0/serve-darwin && \
-    chmod +x serve && \
-    TOKEN="RANDOM-TOKEN-HERE" ./serve
+curl -sL -o makeless https://github.com/loeffel-io/makeless/releases/download/v0.4.0/makeless-darwin && \
+    chmod +x makeless && \
+    TOKEN="RANDOM-TOKEN-HERE" ./makeless
 ```
 
 ### Linux
 
 ```bash
-curl -sL -o serve https://github.com/loeffel-io/serve/releases/download/v0.3.0/serve-linux && \
-    chmod +x serve && \
-    TOKEN="RANDOM-TOKEN-HERE" ./serve
+curl -sL -o makeless https://github.com/loeffel-io/makeless/releases/download/v0.4.0/makeless-linux && \
+    chmod +x makeless && \
+    TOKEN="RANDOM-TOKEN-HERE" ./makeless
 ```
