@@ -7,21 +7,3 @@
 ## Documentation
 
 [makeless.io](https://makeless.io)
-
-## Run
-
-### MacOS
-
-```bash
-curl -sL -o makeless https://github.com/loeffel-io/makeless/releases/download/v0.4.0/makeless-darwin && \
-    chmod +x makeless && \
-    TOKEN="RANDOM-TOKEN-HERE" ./makeless
-```
-
-### Linux
-
-```bash
-curl -sL -o makeless https://github.com/loeffel-io/makeless/releases/download/v0.4.0/makeless-linux && \
-    chmod +x makeless && \
-    TOKEN="RANDOM-TOKEN-HERE" ./makeless
-```
