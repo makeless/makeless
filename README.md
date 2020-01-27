@@ -2,9 +2,11 @@
 
 # Makeless Client - Painless Docker Deployments
 
-[![Build Status](https://travis-ci.com/loeffel-io/serve-server.svg?token=diwUYjrdo8kHiwiMCFuq&branch=master)](https://travis-ci.com/loeffel-io/serve-server)
+[![Build Status](https://travis-ci.com/makeless/makeless.svg?branch=master)](https://travis-ci.com/makeless/makeless)
 
-[Documentation](https://makeless.io)
+## Documentation
+
+[makeless.io](https://makeless.io)
 
 ## Run
 
