@@ -1,4 +1,4 @@
-<img width="180" src="https://raw.githubusercontent.com/makeless/server/master/serve-logo.png" alt="logo">
+<img width="180" src="https://raw.githubusercontent.com/makeless/server/master/makeless-logo.png" alt="logo">
 
 # Makeless Client - Painless Docker Deployments
 
