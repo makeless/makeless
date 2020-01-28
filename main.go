@@ -123,7 +123,7 @@ func main() {
 	}
 
 	// post
-	message, err := post(
+	result, err := post(
 		config,
 		configBytes,
 		"deploy.zip",
@@ -134,7 +134,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("%s", message)
+	log.Print(result)
 }
 
 func getSignedToken(name string) (string, error) {
@@ -251,5 +251,9 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 		return "", err
 	}
 
-	return fmt.Sprintf("Output: %s\nError: %s", response.Data, response.Error), nil
+	if response.Error != "" {
+		return "", fmt.Errorf("%s", response.Error)
+	}
+
+	return fmt.Sprintf("%s", response.Data), nil
 }
