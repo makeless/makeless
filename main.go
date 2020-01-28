@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
@@ -122,7 +123,7 @@ func main() {
 	}
 
 	// post
-	err = post(
+	message, err := post(
 		config,
 		configBytes,
 		"deploy.zip",
@@ -132,6 +133,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Printf("%s", message)
 }
 
 func getSignedToken(name string) (string, error) {
@@ -142,21 +145,21 @@ func getSignedToken(name string) (string, error) {
 	return token.SignedString([]byte(os.Getenv("TOKEN")))
 }
 
-func post(config *config, configBytes []byte, filename string, targetUrl string) error {
+func post(config *config, configBytes []byte, filename string, targetUrl string) (string, error) {
 	bodyBuffer := new(bytes.Buffer)
 	bodyWriter := multipart.NewWriter(bodyBuffer)
 
 	fileWriter, err := bodyWriter.CreateFormFile("file", filename)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// open file handle
 	file, err := os.Open(filename)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	defer func() {
@@ -170,20 +173,20 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 	_, err = io.Copy(fileWriter, file)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// config field
 	configFieldWriter, err := bodyWriter.CreateFormField("config")
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	_, err = configFieldWriter.Write(configBytes)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// content type
@@ -193,21 +196,21 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 	err = bodyWriter.Close()
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// get signed token
 	signedToken, err := getSignedToken(config.Name)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// request
 	req, err := http.NewRequest("POST", targetUrl, bodyBuffer)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// add headers
@@ -221,7 +224,7 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 	resp, err := client.Do(req)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// close response body
@@ -237,9 +240,16 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	log.Printf("%s", string(body))
-	return nil
+	var response *response
+
+	err = json.Unmarshal(body, &response)
+
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("Output: %s\nError: %s", response.Data, response.Error), nil
 }
