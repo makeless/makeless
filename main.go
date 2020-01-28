@@ -97,10 +97,10 @@ func main() {
 	// replace placeholders
 	yStr := string(y)
 
-	// --> %build_dir%
+	// --> %live_dir%
 	yStr = strings.ReplaceAll(
 		yStr,
-		"%build_dir%",
+		"%live_dir%",
 		fmt.Sprintf("/home/makeless/containers/%s/latest", config.Name),
 	)
 
