@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/mholt/archiver/v3"
@@ -14,6 +15,14 @@ import (
 	"os"
 	"strings"
 )
+
+func getProtocol(https bool) string {
+	if https {
+		return "https"
+	}
+
+	return "http"
+}
 
 func main() {
 	config := new(config)
@@ -49,6 +58,11 @@ func main() {
 
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// check name
+	if config.Name == "" {
+		log.Fatal(errors.New("name is missing"))
 	}
 
 	// build compose
@@ -107,7 +121,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = post(config, configBytes, "deploy.zip", fmt.Sprintf("http://%s/deploy", config.Host))
+	// post
+	err = post(
+		config,
+		configBytes,
+		"deploy.zip",
+		fmt.Sprintf("%s://%s/deploy", getProtocol(config.Https), config.Host),
+	)
 
 	if err != nil {
 		log.Fatal(err)
