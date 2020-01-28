@@ -12,7 +12,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -39,14 +38,14 @@ func main() {
 	}()
 
 	// read file
-	b, err := ioutil.ReadAll(file)
+	configBytes, err := ioutil.ReadAll(file)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// to yaml
-	err = yaml.Unmarshal(b, &config)
+	err = yaml.Unmarshal(configBytes, &config)
 
 	if err != nil {
 		log.Fatal(err)
@@ -108,7 +107,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = post(config, "deploy.zip", fmt.Sprintf("http://%s/deploy", config.Host))
+	err = post(config, configBytes, "deploy.zip", fmt.Sprintf("http://%s/deploy", config.Host))
 
 	if err != nil {
 		log.Fatal(err)
@@ -123,7 +122,7 @@ func getSignedToken(name string) (string, error) {
 	return token.SignedString([]byte(os.Getenv("TOKEN")))
 }
 
-func post(config *config, filename string, targetUrl string) error {
+func post(config *config, configBytes []byte, filename string, targetUrl string) error {
 	bodyBuffer := new(bytes.Buffer)
 	bodyWriter := multipart.NewWriter(bodyBuffer)
 
@@ -154,27 +153,14 @@ func post(config *config, filename string, targetUrl string) error {
 		return err
 	}
 
-	// name field
-	nameFieldWriter, err := bodyWriter.CreateFormField("name")
+	// config field
+	configFieldWriter, err := bodyWriter.CreateFormField("config")
 
 	if err != nil {
 		return err
 	}
 
-	_, err = nameFieldWriter.Write([]byte(config.Name))
-
-	if err != nil {
-		return err
-	}
-
-	// shared field
-	sharedFieldWriter, err := bodyWriter.CreateFormField("shared")
-
-	if err != nil {
-		return err
-	}
-
-	_, err = sharedFieldWriter.Write([]byte(strconv.FormatBool(len(config.Service) == 0)))
+	_, err = configFieldWriter.Write(configBytes)
 
 	if err != nil {
 		return err
