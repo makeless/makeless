@@ -66,6 +66,13 @@ func main() {
 		log.Fatal(errors.New("name is missing"))
 	}
 
+	// home dir
+	homeDir, err := os.UserHomeDir()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// build compose
 	var compose = make(map[string]interface{})
 
@@ -98,11 +105,18 @@ func main() {
 	// replace placeholders
 	yStr := string(y)
 
-	// --> %live_dir%
+	// --> %latest_dir%
 	yStr = strings.ReplaceAll(
 		yStr,
-		"%live_dir%",
+		"%latest_dir%",
 		fmt.Sprintf("/home/makeless/containers/%s/latest", config.Name),
+	)
+
+	// --> %service_dir%
+	yStr = strings.ReplaceAll(
+		yStr,
+		"%service_dir%",
+		fmt.Sprintf("%s/makeless/containers/%s", homeDir, config.Name),
 	)
 
 	// write docker-compose.yml file
