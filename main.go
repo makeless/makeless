@@ -266,7 +266,7 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 	}
 
 	if response.Error != "" {
-		return "", fmt.Errorf("%s", response.Error)
+		return "", fmt.Errorf("%s %s", response.Error, response.Data)
 	}
 
 	return fmt.Sprintf("%s", response.Data), nil
