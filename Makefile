@@ -1,4 +1,4 @@
-linter:
+install:
 	go get
 
 linter:
