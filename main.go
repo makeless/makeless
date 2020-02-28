@@ -265,7 +265,7 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 		return "", err
 	}
 
-	if response.Base64 == true {
+	if response.Base64 {
 		dataBytes, err := base64.StdEncoding.DecodeString(response.Data)
 
 		if err != nil {
@@ -279,5 +279,5 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 		return "", fmt.Errorf("%s %s", response.Error, response.Data)
 	}
 
-	return fmt.Sprintf("%s", response.Data), nil
+	return response.Data, nil
 }
