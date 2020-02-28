@@ -1,5 +1,8 @@
 linter:
-	- golangci-lint run
+	go get
+
+linter:
+	golangci-lint run
 
 go-build:
 	GO111MODULE=on GOOS=darwin GOARCH=amd64 go build -o makeless-darwin

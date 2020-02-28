@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -258,11 +259,20 @@ func post(config *config, configBytes []byte, filename string, targetUrl string)
 	}
 
 	var response *response
-
 	err = json.Unmarshal(body, &response)
 
 	if err != nil {
 		return "", err
+	}
+
+	if response.Base64 == true {
+		dataBytes, err := base64.StdEncoding.DecodeString(response.Data)
+
+		if err != nil {
+			return "", err
+		}
+
+		response.Data = string(dataBytes)
 	}
 
 	if response.Error != "" {
